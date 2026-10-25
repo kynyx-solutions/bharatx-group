@@ -1,0 +1,208 @@
+@import 'tailwindcss';
+
+/* Brand tokens: brand/design-tokens.css (colours sampled from the logo). */
+@theme {
+  --color-navy: #012247;
+  --color-navy-soft: #0b2f5c;
+  --color-saffron: #fe7802;
+  --color-saffron-light: #fda84a;
+  --color-saffron-text: #a34b00;
+  --color-blue: #016dab;
+  --color-sky: #5acdeb;
+  --color-green: #5c9b19;
+  --color-green-deep: #085a25;
+  --color-green-text: #3f7a0e;
+  --color-slate: #464c57;
+  --color-ivory: #faf9f6;
+  --color-sand: #f1eee6;
+  --color-line: #e3dfd5;
+
+  /* Type scale: Tailwind's defaults + 1px each (decided 24 Oct 2026), e.g. 16 -> 17. */
+  --text-xs: 0.8125rem; /* 13px */
+  --text-sm: 0.9375rem; /* 15px */
+  --text-base: 1.0625rem; /* 17px */
+  --text-lg: 1.1875rem; /* 19px */
+  --text-xl: 1.3125rem; /* 21px */
+  --text-2xl: 1.5625rem; /* 25px */
+  --text-3xl: 1.9375rem; /* 31px */
+  --text-4xl: 2.3125rem; /* 37px */
+  --text-5xl: 3.0625rem; /* 49px */
+  --text-6xl: 3.8125rem; /* 61px */
+  --text-7xl: 4.5625rem; /* 73px */
+
+  --font-heading: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+@layer base {
+  html {
+    /* Light theme only: stops browsers darkening or inverting the site in dark mode. */
+    color-scheme: only light;
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  body {
+    @apply bg-ivory text-navy font-sans antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-heading tracking-tight text-navy;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  a {
+    @apply underline-offset-4;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-blue;
+  }
+}
+
+/* Full width with side gutters; stops growing at 1920px so lines never get absurdly long. */
+@utility container-page {
+  @apply mx-auto w-full max-w-[1920px] px-5 sm:px-8 lg:px-12 2xl:px-20;
+}
+
+/* Reading pages (articles, legal, search): a comfortable line length. */
+@utility container-narrow {
+  @apply mx-auto w-full max-w-3xl px-5 sm:px-8;
+}
+
+@utility eyebrow {
+  @apply text-xs font-semibold uppercase tracking-[0.16em] text-saffron-text;
+}
+
+/* ---- Motion: entrance, scroll reveal, ticker (all off under reduced motion) ---- */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes glow {
+  50% {
+    opacity: 0.75;
+    transform: scale(1.08);
+  }
+}
+
+@utility animate-rise {
+  animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@utility animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+@utility animate-glow {
+  animation: glow 9s ease-in-out infinite;
+}
+
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-glow,
+  .reveal {
+    animation: none !important;
+  }
+}
+
+/* Fine grid that fades out from the centre; used on dark sections. */
+@utility bg-grid {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.06) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 75%);
+}
+
+/* Same grid in navy, for light sections. */
+@utility bg-grid-light {
+  background-image:
+    linear-gradient(rgb(1 34 71 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(1 34 71 / 0.05) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 70% at 30% 40%, #000 30%, transparent 75%);
+}
+
+/* Highlight words on light backgrounds: deep saffron, at least 3.7:1 for large text. */
+@utility text-highlight {
+  /* Italic glyphs lean past their box; padding keeps the gradient from clipping the last letter. */
+  padding-inline-end: 0.12em;
+  margin-inline-end: -0.12em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  background: linear-gradient(100deg, #c45c00, var(--color-saffron-text) 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Bright version, for the dark home hero only. */
+@utility text-saffron-gradient {
+  padding-inline-end: 0.12em;
+  margin-inline-end: -0.12em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  background: linear-gradient(100deg, var(--color-saffron-light), var(--color-saffron) 60%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Rich text from the CMS */
+@utility prose-bx {
+  @apply text-lg leading-relaxed text-slate;
+  & p {
+    @apply mb-5;
+  }
+  & h2 {
+    @apply mt-10 mb-4 text-3xl;
+  }
+  & h3 {
+    @apply mt-8 mb-3 text-2xl;
+  }
+  & ul {
+    @apply mb-5 list-disc pl-6;
+  }
+  & ol {
+    @apply mb-5 list-decimal pl-6;
+  }
+  & li {
+    @apply mb-1;
+  }
+  & a {
+    @apply text-blue underline;
+  }
+  & strong {
+    @apply text-navy;
+  }
+}

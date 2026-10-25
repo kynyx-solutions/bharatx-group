@@ -1,0 +1,47 @@
+/*
+ * BharatX Group design tokens
+ * Colours sampled from the BharatX Group logo (brand/logo/bharatx-group-logo.png).
+ * See brand/brand-colors.md for the usage and accessibility rules.
+ */
+
+:root {
+  /* Core palette */
+  --bx-navy: #012247;          /* Primary: "BHARAT" wordmark. Headings, body text, header, footer */
+  --bx-saffron: #fe7802;       /* Accent: "X". Buttons, highlights, icons. Never use as text */
+  --bx-blue: #016dab;          /* Secondary: "B" mark. Links, secondary buttons */
+  --bx-green: #5c9b19;         /* Secondary: leaf. Icons, accents, company tags */
+  --bx-slate: #464c57;         /* Neutral: "GROUP" text. Secondary text */
+
+  /* Tints */
+  --bx-sky: #5acdeb;           /* Highlight in the B */
+  --bx-green-deep: #085a25;    /* Farmland */
+  --bx-saffron-light: #fda84a; /* Sun */
+  --bx-ivory: #faf9f6;         /* Page background */
+  --bx-white: #ffffff;
+
+  /* Accessible text variants (pass WCAG AA 4.5:1 on white) */
+  --bx-saffron-text: #a34b00;  /* 5.9:1 on white, 5.1:1 on beige */
+  --bx-green-text: #3f7a0e;    /* 5.3:1 */
+
+  /* Typography */
+  --bx-font-heading: "Fraunces", Georgia, serif;
+  --bx-font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* Tailwind CSS v4: paste into your main CSS after `@import "tailwindcss";` */
+@theme {
+  --color-navy: #012247;
+  --color-saffron: #fe7802;
+  --color-saffron-light: #fda84a;
+  --color-saffron-text: #a34b00;
+  --color-blue: #016dab;
+  --color-sky: #5acdeb;
+  --color-green: #5c9b19;
+  --color-green-deep: #085a25;
+  --color-green-text: #3f7a0e;
+  --color-slate: #464c57;
+  --color-ivory: #faf9f6;
+
+  --font-heading: "Fraunces", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}

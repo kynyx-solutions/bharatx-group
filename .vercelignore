@@ -1,0 +1,10 @@
+# Local-only data: the database and uploads go to Turso and Vercel Blob instead (npm run push:db / push:media).
+bharatx.db
+bharatx.db-*
+media/
+private/
+.env
+.env.*
+!.env.example
+.next/
+node_modules/
