@@ -11,7 +11,15 @@ A preview of the site and admin on `https://<project>.vercel.app`. Vercel's free
 
 Search engines stay blocked (`robots.txt` only allows indexing on bharatxgroup.org). Email is printed to the logs until `RESEND_API_KEY` is set.
 
-## Steps
+## Automatic first import (no keys needed on this computer)
+
+Vercel marks the Turso and Blob keys as sensitive, so they can't be downloaded. Instead, the first build imports the content itself:
+
+- `npm run snapshot` makes `deploy-snapshot/`: a copy of the local database with all private data emptied (user accounts, enquiries, applications, CVs, documents, admin preferences), plus the uploaded images. Commit it.
+- Before each Vercel build, `scripts/prebuild.mjs` runs `src/seed/hosted-import.ts`. If the Turso database is empty, it loads the snapshot, uploads the images to Blob and creates an admin account with a random password, printed once in the **build log** (Deployments → the deployment → Build Logs, search for `Admin login`). If the database already has content, it does nothing.
+- To re-import later (overwriting the hosted content), empty the Turso database first, or use `npm run push:db -- --replace` with real keys.
+
+## Steps (manual alternative with real keys)
 
 1. **Log in and create the project** (in this folder):
    ```bash

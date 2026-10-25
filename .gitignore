@@ -59,3 +59,4 @@ node_modules/
 # Vercel CLI (tokens)
 .vercel
 .env.vercel
+.env*

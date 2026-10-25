@@ -19,7 +19,9 @@
     "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run src/seed/index.ts",
     "typecheck": "tsc --noEmit",
     "push:db": "node --env-file-if-exists=.env.vercel scripts/push-db.mjs",
-    "push:media": "node --env-file-if-exists=.env.vercel scripts/push-media.mjs"
+    "push:media": "node --env-file-if-exists=.env.vercel scripts/push-media.mjs",
+    "prebuild": "node scripts/prebuild.mjs",
+    "snapshot": "node scripts/make-snapshot.mjs"
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "3.92.0",
