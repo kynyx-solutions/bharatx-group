@@ -274,7 +274,7 @@ const people: PersonSeed[] = [
     name: 'Dharampal Singh',
     slug: 'dharampal-singh',
     role: 'Chief Revenue & Operating Officer',
-    order: 2,
+    order: 3,
     photo: 'images/leadership/dharampal-singh.webp',
     linkedin: 'https://www.linkedin.com/in/dharampal-singh-995aa2228',
     // castersglobal.com lists him as Founder & CEO of Casters Global, but BharatX's bio doesn't.
@@ -287,7 +287,7 @@ const people: PersonSeed[] = [
     name: 'Nitin Arora',
     slug: 'nitin-arora',
     role: 'Executive Vice President — Product, Technology & AI',
-    order: 3,
+    order: 2,
     photo: 'images/leadership/nitin-arora.png',
     linkedin: 'https://www.linkedin.com/in/aronitin',
     shortBio:
@@ -297,14 +297,14 @@ const people: PersonSeed[] = [
   {
     name: 'Dr. Akanksha Verma',
     slug: 'akanksha-verma',
-    role: 'Chief Operating Officer',
+    role: 'Chief Human Resources Officer (CHRO)',
     order: 4,
     // Passport photo (413×531) on a blurred office background; original: akanksha-verma-passport.png.
     photo: 'images/leadership/akanksha-verma-office.jpg',
     linkedin: 'https://www.linkedin.com/in/akanksha-verma-304a18191',
     shortBio:
-      'Environmental scientist with an M.Phil. and Ph.D., and research in sustainability and pollution. Her role as COO covers operational coordination, execution and the Group’s strategic priorities.',
-    bio: 'Dr. Akanksha Verma has an academic background in environmental sciences and management, with qualifications spanning undergraduate and postgraduate studies, an M.Phil. and a Ph.D. Her expertise in environmental research, sustainability and pollution-related studies provides a foundation for her role as Chief Operating Officer at BharatX Group, where she will focus on operational coordination, execution and supporting the Group’s strategic priorities.',
+      'Environmental scientist with an M.Phil. and Ph.D., and research in sustainability and pollution. As CHRO, she leads people, culture, hiring and talent across BharatX Group and its businesses.',
+    bio: 'Dr. Akanksha Verma has an academic background in environmental sciences and management, with qualifications spanning undergraduate and postgraduate studies, an M.Phil. and a Ph.D. Her expertise in environmental research, sustainability and pollution-related studies provides a foundation for her role as Chief Human Resources Officer (CHRO) at BharatX Group, where she will lead people, culture, hiring and talent across the Group’s businesses.',
   },
 ]
 

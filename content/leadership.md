@@ -2,7 +2,7 @@
 
 Source: bios supplied by BharatX on 24 Oct 2026. Dharampal Singh's spelling follows his LinkedIn profile and the bio BharatX supplied; castersglobal.com spells it "Dharmapal". His Casters Global role comes from [castersglobal.com/about](https://castersglobal.com/about).
 
-Display order on the Leadership page: Pradeep Kumar, Dharampal Singh, Nitin Arora, Dr. Akanksha Verma.
+Display order on the Leadership page (BharatX, 26 Oct 2026): Pradeep Kumar, Nitin Arora, Dharampal Singh, Dr. Akanksha Verma.
 
 ## Pradeep Kumar
 **Group Chairman & Managing Director**
@@ -38,18 +38,20 @@ LinkedIn: https://www.linkedin.com/in/aronitin
 Nitin Arora brings over 15 years of experience across technology, product innovation, artificial intelligence and entrepreneurship. He holds a bachelor's degree in Computer Science from IIT Delhi, a master's degree from New York University, and a PhD in Computer Science and Computation from IIT Delhi. His professional experience spans leading organisations including Google, Amazon, GE, iLabs and Deloitte, alongside building his own startup. At BharatX Group, he will lead product, technology and AI strategy, driving scalable innovation and the development of impactful, AI-powered solutions across the Group's portfolio.
 
 ## Dr. Akanksha Verma
-**Chief Operating Officer**
+**Chief Human Resources Officer (CHRO)** (changed from Chief Operating Officer on 26 Oct 2026)
 Photo: `images/leadership/akanksha-verma-office.jpg`: her passport photo (`akanksha-verma-passport.png`, 413×531, white background, supplied 24 Oct 2026) with the background replaced by a blurred office scene (AI placeholder image) and upscaled 2×. A studio headshot of at least 800×800 px would still be better.
 LinkedIn: https://www.linkedin.com/in/akanksha-verma-304a18191
 
-Dr. Akanksha Verma has an academic background in environmental sciences and management, with qualifications spanning undergraduate and postgraduate studies, an M.Phil. and a Ph.D. Her expertise in environmental research, sustainability and pollution-related studies provides a foundation for her role as Chief Operating Officer at BharatX Group, where she will focus on operational coordination, execution and supporting the Group's strategic priorities.
+Dr. Akanksha Verma has an academic background in environmental sciences and management, with qualifications spanning undergraduate and postgraduate studies, an M.Phil. and a Ph.D. Her expertise in environmental research, sustainability and pollution-related studies provides a foundation for her role as Chief Human Resources Officer (CHRO) at BharatX Group, where she will lead people, culture, hiring and talent across the Group's businesses.
+
+**To confirm:** the last sentence was reworded for the CHRO role (the bio as supplied described the COO role). BharatX to confirm the CHRO remit.
 
 ## Short bios (team cards, ~200 characters each)
 
 - **pradeep-kumar** (190): Technology and business leader with 15+ years across product, data, AI and enterprise technology at SAP Labs, Meta, Airtel and Samsung. Master’s in AI from IIT Delhi; MBA from IIM Ahmedabad.
 - **dharampal-singh** (193): Operations leader with 28+ years in automotive manufacturing. Former Plant Head at Jay Ushin Ltd (JPM Group), running three plants and teams of 1,000+. Expert in Lean, Six Sigma and IATF 16949.
 - **nitin-arora** (197): Technologist with 15+ years across product, AI and entrepreneurship at Google, Amazon, GE and Deloitte, and founder of his own startup. B.Tech and PhD in Computer Science, IIT Delhi; master’s, NYU.
-- **akanksha-verma** (193): Environmental scientist with an M.Phil. and Ph.D., and research in sustainability and pollution. Her role as COO covers operational coordination, execution and the Group’s strategic priorities.
+- **akanksha-verma** (191): Environmental scientist with an M.Phil. and Ph.D., and research in sustainability and pollution. As CHRO, she leads people, culture, hiring and talent across BharatX Group and its businesses.
 
 ## Notes for the build
 

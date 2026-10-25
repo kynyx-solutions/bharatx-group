@@ -2,6 +2,21 @@
  * Copy one SQLite/libSQL database into another: schema (tables, then indexes and triggers), then every row,
  * in parameterised batches. Used by `npm run push:db` and by the one-time import on Vercel.
  */
+/** Tables holding private or per-site data: never in the snapshot, never overwritten by a content sync. */
+export const PRIVATE_TABLES = [
+  'users_sessions',
+  'users',
+  'enquiries',
+  'applications',
+  'cv_files',
+  'documents',
+  'payload_preferences_rels',
+  'payload_preferences',
+  'payload_locked_documents_rels',
+  'payload_locked_documents',
+  'payload_kv',
+]
+
 const userTables = "type='table' and name not like 'sqlite_%' and name not like '_litestream%'"
 
 export async function listTables(client) {
@@ -53,5 +68,38 @@ export async function copyDatabase({ from, to, replace = false, log = console.lo
     tx.close()
   }
   log(`Copied ${total} rows.`)
+  return { tables: tables.length, rows: total }
+}
+
+/**
+ * Refresh content in a database that already has the same schema: every table except `exclude` is emptied and
+ * refilled from `from`, in one transaction with deferred foreign-key checks. Private tables are left untouched.
+ */
+export async function syncContent({ from, to, exclude = PRIVATE_TABLES, log = console.log }) {
+  const skip = new Set(exclude)
+  const tables = (await listTables(from)).filter((t) => !skip.has(t))
+  await to.execute('PRAGMA foreign_keys = ON')
+  let total = 0
+  const tx = await to.transaction('write')
+  try {
+    await tx.execute('PRAGMA defer_foreign_keys = ON')
+    for (const table of tables) {
+      await tx.execute(`DELETE FROM "${table}"`)
+      const { rows, columns } = await from.execute(`select * from "${table}"`)
+      if (!rows.length) continue
+      const sql = `insert into "${table}" (${columns.map((c) => `"${c}"`).join(', ')}) values (${columns.map(() => '?').join(', ')})`
+      for (let i = 0; i < rows.length; i += 100) {
+        await tx.batch(rows.slice(i, i + 100).map((r) => ({ sql, args: columns.map((c) => r[c]) })))
+      }
+      total += rows.length
+    }
+    await tx.commit()
+  } catch (err) {
+    await tx.rollback().catch(() => {})
+    throw err
+  } finally {
+    tx.close()
+  }
+  log(`Refreshed ${tables.length} content tables (${total} rows); private tables untouched.`)
   return { tables: tables.length, rows: total }
 }

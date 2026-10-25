@@ -4,28 +4,19 @@
  *   deploy-snapshot/content.sqlite   copy of bharatx.db with user accounts, enquiries, applications,
  *                                    CVs, private documents and admin preferences emptied, then VACUUMed
  *   deploy-snapshot/uploads/         copy of media/ (public images only)
+ *   deploy-snapshot/version.txt      when the snapshot was made
  *
- * The one-time import on Vercel (src/seed/hosted-import.ts) loads this into an empty Turso database and Vercel Blob.
+ * The import on Vercel (src/seed/hosted-import.ts) loads it into Turso and Vercel Blob, and refreshes the content
+ * whenever a newer snapshot is deployed.
  *   npm run snapshot
  */
-import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs'
+import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { createClient } from '@libsql/client'
+import { PRIVATE_TABLES } from './lib/copy-db.mjs'
 
 const out = 'deploy-snapshot'
 const db = `${out}/content.sqlite`
-const privateTables = [
-  'users_sessions',
-  'users',
-  'enquiries',
-  'applications',
-  'cv_files',
-  'documents',
-  'payload_preferences_rels',
-  'payload_preferences',
-  'payload_locked_documents_rels',
-  'payload_locked_documents',
-  'payload_kv',
-]
+const privateTables = PRIVATE_TABLES
 
 rmSync(out, { recursive: true, force: true })
 mkdirSync(`${out}/uploads`, { recursive: true })
@@ -41,4 +32,6 @@ await client.execute('VACUUM')
 client.close()
 
 if (existsSync('media')) cpSync('media', `${out}/uploads`, { recursive: true })
+// The version tells the import on Vercel that the content changed (see src/seed/hosted-import.ts).
+writeFileSync(`${out}/version.txt`, new Date().toISOString())
 console.log(`Snapshot ready: ${db} (private tables emptied: ${privateTables.filter((t) => present.has(t)).length}), ${readdirSync(`${out}/uploads`).length} uploads.`)

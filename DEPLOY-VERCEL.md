@@ -11,13 +11,22 @@ A preview of the site and admin on `https://<project>.vercel.app`. Vercel's free
 
 Search engines stay blocked (`robots.txt` only allows indexing on bharatxgroup.org). Email is printed to the logs until `RESEND_API_KEY` is set.
 
-## Automatic first import (no keys needed on this computer)
+## Automatic import and content updates (no keys needed on this computer)
 
-Vercel marks the Turso and Blob keys as sensitive, so they can't be downloaded. Instead, the first build imports the content itself:
+Vercel marks the Turso and Blob keys as sensitive, so they can't be downloaded. Instead, each Vercel build brings the content up to date itself:
 
-- `npm run snapshot` makes `deploy-snapshot/`: a copy of the local database with all private data emptied (user accounts, enquiries, applications, CVs, documents, admin preferences), plus the uploaded images. Commit it.
-- Before each Vercel build, `scripts/prebuild.mjs` runs `src/seed/hosted-import.ts`. If the Turso database is empty, it loads the snapshot, uploads the images to Blob and creates an admin account with a random password, printed once in the **build log** (Deployments → the deployment → Build Logs, search for `Admin login`). If the database already has content, it does nothing.
-- To re-import later (overwriting the hosted content), empty the Turso database first, or use `npm run push:db -- --replace` with real keys.
+- **Content is edited on this computer** (local admin), then published with:
+  ```bash
+  npm run snapshot     # deploy-snapshot/: the database without private data, the images, a version stamp
+  git add deploy-snapshot && git commit -m "Content update" && git push
+  ```
+  The push starts a Vercel build.
+- Before each build, `scripts/prebuild.mjs` runs `src/seed/hosted-import.ts`:
+  1. **Database:** empty → full import. Older snapshot → the content tables are refreshed. User accounts, enquiries, applications, CVs and documents on Vercel are **never** touched.
+  2. **Images:** any file missing from Blob is uploaded.
+  3. **Admin:** if there are no accounts, an admin is created with a random password, printed once in the **build log** (Deployments → the deployment → Build Logs, search for `Admin login`).
+- **When content starts being edited in the Vercel admin instead,** set `FREEZE_HOSTED_CONTENT=1` in Vercel's environment variables. Builds then leave the hosted content alone, so those edits are never overwritten by a snapshot.
+- A snapshot can't change the database **schema**: after adding or changing CMS fields, the hosted database needs a full re-import (empty it, then redeploy) or a migration.
 
 ## Steps (manual alternative with real keys)
 
