@@ -27,18 +27,30 @@ export async function copyDatabase({ from, to, replace = false, log = console.lo
   await to.executeMultiple(['PRAGMA foreign_keys=OFF;', ...schema.map((s) => `${s.sql};`)].join('\n'))
   log(`Created ${tables.length} tables and ${schema.length - tables.length} indexes/triggers.`)
 
+  await to.execute('PRAGMA foreign_keys = ON')
+
+  // All rows in one transaction, with foreign-key checks deferred to the commit: rows can arrive in any table
+  // order, yet the copy only succeeds if every reference resolves. (On a remote database each request is its own
+  // connection, so "PRAGMA foreign_keys=OFF" from an earlier request does not apply here.)
   let total = 0
-  for (const table of tables) {
-    const { rows, columns } = await from.execute(`select * from "${table}"`)
-    if (!rows.length) continue
-    const sql = `insert into "${table}" (${columns.map((c) => `"${c}"`).join(', ')}) values (${columns.map(() => '?').join(', ')})`
-    for (let i = 0; i < rows.length; i += 200) {
-      await to.batch(
-        rows.slice(i, i + 200).map((r) => ({ sql, args: columns.map((c) => r[c]) })),
-        'write',
-      )
+  const tx = await to.transaction('write')
+  try {
+    await tx.execute('PRAGMA defer_foreign_keys = ON')
+    for (const table of tables) {
+      const { rows, columns } = await from.execute(`select * from "${table}"`)
+      if (!rows.length) continue
+      const sql = `insert into "${table}" (${columns.map((c) => `"${c}"`).join(', ')}) values (${columns.map(() => '?').join(', ')})`
+      for (let i = 0; i < rows.length; i += 100) {
+        await tx.batch(rows.slice(i, i + 100).map((r) => ({ sql, args: columns.map((c) => r[c]) })))
+      }
+      total += rows.length
     }
-    total += rows.length
+    await tx.commit()
+  } catch (err) {
+    await tx.rollback().catch(() => {})
+    throw err
+  } finally {
+    tx.close()
   }
   log(`Copied ${total} rows.`)
   return { tables: tables.length, rows: total }

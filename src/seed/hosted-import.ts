@@ -22,15 +22,21 @@ if (!url || !existsSync(path.join(snapshot, 'content.sqlite'))) {
 }
 
 const remote = createClient({ url, authToken: process.env.TURSO_AUTH_TOKEN })
-if ((await listTables(remote)).includes('companies')) {
+const tables = await listTables(remote)
+const companies = tables.includes('companies')
+  ? Number((await remote.execute('select count(*) as n from "companies"')).rows[0].n)
+  : 0
+if (companies > 0) {
   console.log('[hosted-import] The hosted database already has content: skipping the import.')
   process.exit(0)
 }
 
-console.log('[hosted-import] Empty hosted database: importing the content snapshot…')
+// Empty, or left half-done by an earlier failed import (tables but no rows): (re)import from scratch.
+console.log(`[hosted-import] ${tables.length ? 'Incomplete' : 'Empty'} hosted database: importing the content snapshot…`)
 await copyDatabase({
   from: createClient({ url: `file:${path.join(snapshot, 'content.sqlite')}` }),
   to: remote,
+  replace: true,
   log: (m: string) => console.log(`[hosted-import] ${m}`),
 })
 
